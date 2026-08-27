@@ -5,21 +5,13 @@ class Solution(object):
         :type target: int
         :rtype: List[int]
         """
+        hashmap = {}
 
-        #add numbers to hashmap as you go
-        #we dont need every instance of the number
-        #so the key is just the number
-
-        available = {}
         for i, n in enumerate(nums):
             candidate = target - n
-
-            if candidate in available:
-                print(candidate)
-                return [i, available[candidate]]
-
-            available[n] = i
-
-        print(available)
+            if candidate in hashmap:
+                return [i, hashmap[candidate]]
+            else:
+                hashmap[n] = i
 
         return []
