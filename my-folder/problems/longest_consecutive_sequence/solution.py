@@ -1,29 +1,16 @@
-class Solution(object):
-    def longestConsecutive(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        # the idea is to store into a hashmap and check only one number behind
-        # if its consecutive, we're not the first one, so move on
-
-        numbers = set()
+class Solution:
+    def longestConsecutive(self, nums: List[int]) -> int:
+        s = set(nums)
         ret = 0
 
-        for n in nums:
-            numbers.add(n)
-
-        for n in numbers:
-            tmp = 0
+        for n in s:
+            count = 0
             num = n
-            if (num - 1) not in numbers:
-                while num in numbers:
-                    tmp += 1
+            if (n - 1) not in s:
+                while num in s:
+                    count += 1
                     num += 1
-            if tmp > ret:
-                ret = tmp
-        
-        return ret
-        
+                if ret < count:
+                    ret = count
 
-                
+        return ret
