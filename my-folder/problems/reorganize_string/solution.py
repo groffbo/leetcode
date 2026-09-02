@@ -1,48 +1,43 @@
-from collections import Counter
+import heapq
 
 class Solution(object):
     def reorganizeString(self, s):
-        """
-        :type s: str
-        :rtype: str
-        """
+        #we make a hashmap
+        #we put that hashmap into a list of pairs
+        #we heapify the hashmap
+        #we pop and push the hashmap until the string is done
+
+        freqs = {}
+        heap = []
+
+        prev_freq = 0
+        prev_char = None
+
         ret = ""
 
-        # counts, and frequencies are important
-        # so we want to use a hashmap
-        # iterate through the hashmap and append it to the string as we go
-        counts = Counter(s)
+        for c in s:
+            if c in freqs:
+                freqs[c] += 1
+            else:
+                freqs[c] = 1
+        
+        for char, freq in freqs.items():
+            heap.append((-freq, char))
 
-        #we must do items because otherwise we are just iterating the keys
-        # the min heap will pick the leftmost / first element to compare against others with 
-        maxHeap = [ [-cnt, char] for char, cnt in counts.items() ]
+        heapq.heapify(heap)
 
-        heapq.heapify(maxHeap)
+        while heap:
+            freq, char = heapq.heappop(heap)
+            ret += char
+            freq += 1
 
-        prev = None
+            if prev_freq < 0:
+                heapq.heappush(heap, (prev_freq, prev_char))
 
-        while maxHeap or prev:
-            #remove the top element from the heap
-            if prev and not maxHeap:
-                return ""
+            prev_char = char
+            prev_freq = freq
 
-            cnt, char = heapq.heappop(maxHeap)
-            cnt += 1
+        if len(ret) != len(s):
+            return ""
 
-            ret += char # add to the string
-
-            # now for the prev part
-            # since its not part of the hashmap, we store the prev to add it back 
-
-            if prev:
-                heapq.heappush(maxHeap, prev)
-                prev = None
-
-            if cnt != 0:
-                prev = [cnt, char] #store the pair
-                
         return ret
-
-
-            
-
