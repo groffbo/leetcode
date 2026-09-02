@@ -1,28 +1,42 @@
-class Solution(object):
-    def subarraySum(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
-        """
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
 
-        # no prefix sum array
-        h = {0:1}
-        prefix = 0
+        # count = 0
+
+        # for i, n in enumerate(nums):
+        #     #at each index
+        #     right = i
+        #     total = 0
+            
+        #     while right < len(nums):
+        #         total += nums[right]
+        #         right += 1
+        #         if total == k:
+        #             count += 1
+
+        
+        # return count
+
+        #optimized solution
+
+        #save off last calculated sum 
+
+        #store ramping sum in list
+        
+        #key: prefix sum value: count of that prefix sum
+        hashmap = {}
+        hashmap[0] = 1
+
+        total = 0
         count = 0
 
         for i, n in enumerate(nums):
-            # for each value
-            #check if the prefix is already in the hashmap
-            prefix += n
-            s = prefix - k
-
-            if s in h:
-                count += h[s]
-
-            if prefix in h:
-                h[prefix] += 1
+            total += n
+            if (total - k) in hashmap:
+                count += hashmap[total-k]
+            if total in hashmap:
+                hashmap[total] += 1
             else:
-                h[prefix] = 1
-        
+                hashmap[total] = 1
+
         return count
